@@ -1,0 +1,2 @@
+export const TEST_ADDRESS = "0xaf6186ee129aC1c6dD2bd4eeF8Db7Db37b45df4D";
+export const DCLTOKEN_ADDRESS = "0xfDB0e4c7e825FfcDd5b889478842B4ee9e062995";
