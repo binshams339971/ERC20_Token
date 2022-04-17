@@ -12,6 +12,7 @@ import {
   BaseContract,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   CallOverrides,
 } from "ethers";
 import { BytesLike } from "@ethersproject/bytes";
@@ -26,11 +27,16 @@ interface DCLTokenInterface extends ethers.utils.Interface {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "burnToken(uint256)": FunctionFragment;
+    "buyerAddress(uint256)": FunctionFragment;
+    "buyers(address)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
+    "exists2(address)": FunctionFragment;
+    "getBuyerAddresses()": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "owner()": FunctionFragment;
+    "purchageToken()": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
@@ -54,10 +60,20 @@ interface DCLTokenInterface extends ethers.utils.Interface {
     functionFragment: "burnToken",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "buyerAddress",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "buyers", values: [string]): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
     values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "exists2", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "getBuyerAddresses",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "increaseAllowance",
@@ -65,6 +81,10 @@ interface DCLTokenInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "purchageToken",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -84,9 +104,19 @@ interface DCLTokenInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burnToken", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "buyerAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "buyers", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "exists2", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getBuyerAddresses",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -95,6 +125,10 @@ interface DCLTokenInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "purchageToken",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -195,6 +229,13 @@ export class DCLToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    buyerAddress(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    buyers(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
+
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseAllowance(
@@ -202,6 +243,10 @@ export class DCLToken extends BaseContract {
       subtractedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    exists2(add: string, overrides?: CallOverrides): Promise<[boolean]>;
+
+    getBuyerAddresses(overrides?: CallOverrides): Promise<[string[]]>;
 
     increaseAllowance(
       spender: string,
@@ -212,6 +257,10 @@ export class DCLToken extends BaseContract {
     name(overrides?: CallOverrides): Promise<[string]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
+
+    purchageToken(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
@@ -255,6 +304,10 @@ export class DCLToken extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  buyerAddress(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+  buyers(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
   decimals(overrides?: CallOverrides): Promise<number>;
 
   decreaseAllowance(
@@ -262,6 +315,10 @@ export class DCLToken extends BaseContract {
     subtractedValue: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  exists2(add: string, overrides?: CallOverrides): Promise<boolean>;
+
+  getBuyerAddresses(overrides?: CallOverrides): Promise<string[]>;
 
   increaseAllowance(
     spender: string,
@@ -272,6 +329,10 @@ export class DCLToken extends BaseContract {
   name(overrides?: CallOverrides): Promise<string>;
 
   owner(overrides?: CallOverrides): Promise<string>;
+
+  purchageToken(
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -309,6 +370,13 @@ export class DCLToken extends BaseContract {
 
     burnToken(_amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
+    buyerAddress(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    buyers(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
     decimals(overrides?: CallOverrides): Promise<number>;
 
     decreaseAllowance(
@@ -316,6 +384,10 @@ export class DCLToken extends BaseContract {
       subtractedValue: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    exists2(add: string, overrides?: CallOverrides): Promise<boolean>;
+
+    getBuyerAddresses(overrides?: CallOverrides): Promise<string[]>;
 
     increaseAllowance(
       spender: string,
@@ -326,6 +398,8 @@ export class DCLToken extends BaseContract {
     name(overrides?: CallOverrides): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
+
+    purchageToken(overrides?: CallOverrides): Promise<void>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -408,6 +482,13 @@ export class DCLToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    buyerAddress(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    buyers(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseAllowance(
@@ -415,6 +496,10 @@ export class DCLToken extends BaseContract {
       subtractedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    exists2(add: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    getBuyerAddresses(overrides?: CallOverrides): Promise<BigNumber>;
 
     increaseAllowance(
       spender: string,
@@ -425,6 +510,10 @@ export class DCLToken extends BaseContract {
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    purchageToken(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -472,6 +561,16 @@ export class DCLToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    buyerAddress(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    buyers(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
@@ -479,6 +578,13 @@ export class DCLToken extends BaseContract {
       subtractedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    exists2(
+      add: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getBuyerAddresses(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     increaseAllowance(
       spender: string,
@@ -489,6 +595,10 @@ export class DCLToken extends BaseContract {
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    purchageToken(
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
